@@ -58,6 +58,7 @@ from .registries import (
     UAVDriverRegistry,
     find_in_registry,
 )
+
 from .version import __version__ as server_version
 
 __all__ = ("app",)
@@ -147,7 +148,7 @@ class SkybrushServer(DaemonApp):
     """A representation of the "world" in which the flock of UAVs live. By
     default, the world is empty but extensions may extend it with objects.
     """
-
+    
     def cancel_async_operations(
         self, receipt_ids: Iterable[str], in_response_to: FlockwaveMessage
     ) -> FlockwaveResponse:
@@ -1185,13 +1186,30 @@ class SkybrushServer(DaemonApp):
         configurator.merge_keys = ["EXTENSIONS"]
         configurator.safe = is_packaged()
 
+    def camera_control(self, message: FlockwaveMessage, sender: Client, *, id_property: str = "id"
+    ) -> FlockwaveMessage:
+     
+
+        parameters = dict(message.body)
+
+        
+        print(parameters)
+    
+
+        
+        
+
+        
+
 
 ############################################################################
 
 app = SkybrushServer("skybrush", PACKAGE_NAME)
 
 # ######################################################################## #
-
+@app.message_hub.on('X-CAMERA-CONTROL')
+def handle_CAMERA_CONTROL(message:FlockwaveMessage, sender:Client, hub:MessageHub):
+    return app.camera_control(message,sender)
 
 @app.message_hub.on("ASYNC-CANCEL")
 def handle_ASYNC_CANCEL(message: FlockwaveMessage, sender: Client, hub: MessageHub):
@@ -1204,7 +1222,7 @@ def handle_ASYNC_RESUME(message: FlockwaveMessage, sender: Client, hub: MessageH
         message.get_ids(), message.body.get("values") or {}, in_response_to=message
     )
 
-
+@app.message_hub.on("")
 @app.message_hub.on("CONN-INF")
 def handle_CONN_INF(message: FlockwaveMessage, sender: Client, hub: MessageHub):
     return app.create_CONN_INF_message_for(message.get_ids(), in_response_to=message)
@@ -1312,6 +1330,7 @@ def handle_UAV_LIST(message: FlockwaveMessage, sender: Client, hub: MessageHub):
 async def handle_single_uav_operations(
     message: FlockwaveMessage, sender: Client, hub: MessageHub
 ):
+    
     if message.get_type() == "LOG-DATA":
         id_property = "uavId"
     else:

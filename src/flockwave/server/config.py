@@ -47,7 +47,7 @@ EXTENSIONS = {
         "format": "auto",
         "id_format": "GPS:{0}",
     },
-    "hotplug": {},
+    #"hotplug": {},
     "http": {},
     "http_server": {},
     "insomnia": {"keep_display_on": False},

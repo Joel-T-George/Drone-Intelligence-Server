@@ -1,0 +1,59 @@
+# #import trio
+# from flask import Flask, request, jsonify
+# import trio
+# from flask_cors import CORS
+# import time
+
+# app = Flask(__name__)
+# CORS(app)
+
+# def gimbal_handler(command:str):
+#     pass
+#     if command == "up":
+#         time.sleep(100)
+#         return "Gimbal Up Button is Clicked"
+#     elif command == "down":
+#         time.sleep(100)
+#         return "Gimbal Down Button is Clicked"
+#     elif command =="left":
+#         time.sleep(100)
+#         return "Gimbal Left Button is Clicked"
+#     elif command == "right":
+#         time.sleep(100)
+#         return "Gimbal  Right is Clicked"
+#     elif command == "home":
+#         time.sleep(100)
+#         return "Gimbal Home Button is Clicked"
+#     else:
+#         return "Invalid activity excuted"
+    
+
+# @app.route('/')
+# def home():
+#     return "Welcome to the Flask Socket Server!"
+
+
+# @app.route('/data', methods=['POST'])
+# def receive_data():
+#     data = request.get_json()
+#     return jsonify({"Received": data})
+
+# # getting clicked button from the client server
+# @app.route('/api/clickedbutton', methods=['POST'])
+# def current_clicked():
+#     data = request.get_json()
+    
+
+#     print(data)
+#     return jsonify({"Status":"Recived successfully"})
+    
+# @app.route('/api/<buttonid>')
+# def button_handler(buttonid):
+#     data = request.get_json()
+#     return jsonify({"stauts":buttonid})
+
+# if __name__ == '__main__':
+#     app.run(host='localhost', port=8001)
+
+
+

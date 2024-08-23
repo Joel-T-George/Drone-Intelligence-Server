@@ -477,7 +477,8 @@ class MessageHub:
 
         if not handled:
             message_type = decoded_message.get_type()
-            if message_type and message_type not in ("BCN-INF", "DOCK-INF", "MSN-INF"):
+            if message_type and message_type not in ("BCN-INF", "DOCK-INF", "MSN-INF", "X-CAMERA-CONTROL"):
+                
                 # Do not log these messages; these may come from Skybrush
                 # Live but we do not want to freak out the user watching the
                 # server logs
