@@ -2,6 +2,7 @@
 
 from appdirs import AppDirs
 from collections import defaultdict
+from . import camera_handlers 
 from inspect import isawaitable, isasyncgen
 from os import environ
 from trio import (
@@ -475,6 +476,7 @@ class SkybrushServer(DaemonApp):
             message = self.message_hub.create_notification(
                 body={"type": "SYS-CLOSE", "reason": reason}
             )
+            
         else:
             message = None
 
@@ -1191,9 +1193,32 @@ class SkybrushServer(DaemonApp):
      
 
         parameters = dict(message.body)
+        camera_action = parameters.pop("msg")
+        camera_ip = parameters.pop("camera_ip")
+        print(camera_action)
+        match camera_action:
+            case "up":
+                camera_handlers.camera_controller(bytes.fromhex(camera_handlers.up),camera_ip)
+            case "home":
+                camera_handlers.camera_controller(bytes.fromhex(camera_handlers.home),camera_ip)
+            
+            case "down":
+                camera_handlers.camera_controller(bytes.fromhex(camera_handlers.down),camera_ip)
+            case "right":
+                camera_handlers.camera_controller(bytes.fromhex(camera_handlers.right),camera_ip)
+            case "left":
+                camera_handlers.camera_controller(bytes.fromhex(camera_handlers.left),camera_ip)
+            case "zoom-in":
+                camera_handlers.camera_controll_zoom(bytes(camera_handlers.zoom_in),camera_ip)
+            case "zoom-out":
+                camera_handlers.camera_controll_zoom(bytes(camera_handlers.zoom_out),camera_ip)
+            case default:
+                print("invalid command")
+
 
         
-        print(parameters)
+
+        
     
 
         
@@ -1207,8 +1232,11 @@ class SkybrushServer(DaemonApp):
 app = SkybrushServer("skybrush", PACKAGE_NAME)
 
 # ######################################################################## #
+
 @app.message_hub.on('X-CAMERA-CONTROL')
 def handle_CAMERA_CONTROL(message:FlockwaveMessage, sender:Client, hub:MessageHub):
+    
+    
     return app.camera_control(message,sender)
 
 @app.message_hub.on("ASYNC-CANCEL")

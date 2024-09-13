@@ -63,9 +63,7 @@ EXTENSIONS = {
         "id_format": "{0:02}",
         "networks": {
             "mav": {
-                "connections": [
-                    "default"
-                ],  # default setup; listens for heartbeats on UDP port 14550, sends broadcasts to UDP port 14555
+                "connections": ["default"],  # default setup; listens for heartbeats on UDP port 14550, sends broadcasts to UDP port 14555
                 "routing": {},
             }
         },
